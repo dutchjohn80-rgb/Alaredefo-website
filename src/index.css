@@ -499,6 +499,46 @@ a {
   }
 }
 
+.newsletter-band {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(236, 253, 245, 0.88)),
+    url("/images/portfolio/portfolio-4.jpeg") center / cover fixed;
+}
+
+.donate-cta-bg {
+  background:
+    url("/images/about/about-group-1.jpeg") center / cover no-repeat;
+  filter: grayscale(85%);
+  transform: scale(1.02);
+}
+
+.news-card {
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.09);
+}
+
+.news-card:hover {
+  box-shadow: 0 30px 70px rgba(16, 185, 129, 0.16);
+}
+
+:root[data-theme="dark"] .newsletter-band {
+  background:
+    linear-gradient(180deg, rgba(7, 21, 19, 0.98), rgba(10, 36, 30, 0.94)),
+    url("/images/portfolio/portfolio-4.jpeg") center / cover fixed;
+}
+
+:root[data-theme="dark"] .news-card {
+  background: linear-gradient(145deg, rgba(16, 36, 33, 0.98), rgba(7, 21, 19, 0.96)) !important;
+  border-color: rgba(16, 185, 129, 0.18) !important;
+}
+
+:root[data-theme="dark"] .news-card h3 {
+  color: #f8fffb !important;
+}
+
+:root[data-theme="dark"] .news-card p {
+  color: #c7d8d2 !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

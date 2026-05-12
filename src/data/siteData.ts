@@ -156,6 +156,109 @@ export const portfolioItems = [
 
 export const membershipTypes = ['Honorary Members', 'Founder Members', 'Ordinary Members']
 
+export interface NewsItem {
+  id: string
+  title: string
+  titleSw: string
+  excerpt: string
+  excerptSw: string
+  image: string
+  date: string
+  category: string
+  categorySw: string
+  attribution: string
+}
+
+export const newsItems: NewsItem[] = [
+  {
+    id: 'news-1',
+    title: 'ALAREDEFO Empowers Women Through Community Bicycle Initiative in Arusha',
+    titleSw: 'ALAREDEFO Inawezesha Wanawake Kupitia Mpango wa Baiskeli Arusha',
+    excerpt: 'ALAREDEFO continues to uplift women in northern Tanzania through practical skills, mobility programs, and economic empowerment that build lasting self-reliance.',
+    excerptSw: 'ALAREDEFO inaendelea kuinua wanawake kaskazini mwa Tanzania kupitia ujuzi wa vitendo na uwezeshaji wa kiuchumi unaokuza kujitegemea.',
+    image: 'https://images.pexels.com/photos/34185223/pexels-photo-34185223.jpeg?auto=compress&cs=tinysrgb&w=800',
+    date: 'April 2025',
+    category: 'Women Empowerment',
+    categorySw: 'Uwezeshaji wa Wanawake',
+    attribution: 'Speak Media Uganda on Pexels',
+  },
+  {
+    id: 'news-2',
+    title: 'Youth Education Programs Reach Hundreds of Students in Arumeru District',
+    titleSw: 'Programu za Elimu Zinafikia Wanafunzi Mia Kadhaa Wilayani Arumeru',
+    excerpt: 'ALAREDEFO\'s educational empowerment initiative has supported access to quality learning for hundreds of young people across Arumeru and surrounding areas.',
+    excerptSw: 'Mpango wa uwezeshaji wa elimu wa ALAREDEFO umesaidia ufikiaji wa elimu bora kwa vijana wengi katika Arumeru na maeneo jirani.',
+    image: 'https://images.pexels.com/photos/32719717/pexels-photo-32719717.jpeg?auto=compress&cs=tinysrgb&w=800',
+    date: 'March 2025',
+    category: 'Education',
+    categorySw: 'Elimu',
+    attribution: 'Saeed Chembea on Pexels',
+  },
+  {
+    id: 'news-3',
+    title: 'Food Security Initiative Supports Smallholder Farmers Across Northern Tanzania',
+    titleSw: 'Mpango wa Usalama wa Chakula Unasaidia Wakulima Wadogo Kaskazini mwa Tanzania',
+    excerpt: 'In partnership with local communities, ALAREDEFO supports smallholder farmers with agricultural knowledge, nutrition awareness, and sustainable food production practices.',
+    excerptSw: 'Kwa ushirikiano na jamii za ndani, ALAREDEFO inasaidia wakulima wadogo kwa ujuzi wa kilimo na uzalishaji endelevu wa chakula.',
+    image: 'https://images.pexels.com/photos/13042951/pexels-photo-13042951.jpeg?auto=compress&cs=tinysrgb&w=800',
+    date: 'February 2025',
+    category: 'Food Security',
+    categorySw: 'Usalama wa Chakula',
+    attribution: 'Joseph K. Masonda on Pexels',
+  },
+]
+
+export const socialLinks = [
+  { platform: 'Facebook', url: 'https://facebook.com/alaredefo', icon: 'Facebook' },
+  { platform: 'Twitter', url: 'https://twitter.com/alaredefo', icon: 'Twitter' },
+  { platform: 'Instagram', url: 'https://instagram.com/alaredefo', icon: 'Instagram' },
+  { platform: 'YouTube', url: 'https://youtube.com/@alaredefo', icon: 'Youtube' },
+  { platform: 'LinkedIn', url: 'https://linkedin.com/company/alaredefo', icon: 'Linkedin' },
+]
+
+export const footerColumns = [
+  {
+    heading: 'Get to Know ALAREDEFO',
+    headingSw: 'Jifunze Kuhusu ALAREDEFO',
+    links: [
+      { label: 'About Us', labelSw: 'Kuhusu Sisi', href: '/#about' },
+      { label: 'Vision & Mission', labelSw: 'Dira na Dhamira', href: '/#about' },
+      { label: 'Annual Report', labelSw: 'Ripoti ya Mwaka', href: '/resources' },
+      { label: 'Meet the Team', labelSw: 'Timu Yetu', href: '/profile' },
+    ],
+  },
+  {
+    heading: 'Our Work',
+    headingSw: 'Kazi Zetu',
+    links: [
+      { label: 'Thematic Areas', labelSw: 'Maeneo ya Kazi', href: '/#services' },
+      { label: 'Portfolio', labelSw: 'Picha', href: '/#portfolio' },
+      { label: 'Programs', labelSw: 'Programu', href: '/programs' },
+      { label: 'Publications', labelSw: 'Machapisho', href: '/resources' },
+    ],
+  },
+  {
+    heading: 'Get Involved',
+    headingSw: 'Shiriki',
+    links: [
+      { label: 'Donate', labelSw: 'Changia', href: '/#contact' },
+      { label: 'Become a Member', labelSw: 'Kuwa Mwanachama', href: '/membership' },
+      { label: 'Partner With Us', labelSw: 'Shirikiana Nasi', href: '/#contact' },
+      { label: 'Events', labelSw: 'Matukio', href: '/#contact' },
+    ],
+  },
+  {
+    heading: 'Connect',
+    headingSw: 'Wasiliana',
+    links: [
+      { label: 'Contact Us', labelSw: 'Wasiliana Nasi', href: '/#contact' },
+      { label: 'Resources', labelSw: 'Rasilimali', href: '/resources' },
+      { label: 'Privacy Policy', labelSw: 'Sera ya Faragha', href: '/privacy' },
+      { label: 'Terms of Use', labelSw: 'Masharti ya Matumizi', href: '/terms' },
+    ],
+  },
+]
+
 export const sw = {
   nav: {
     Home: 'Nyumbani',
@@ -208,6 +311,8 @@ export const sw = {
     email: 'Barua Pepe',
     phone: 'Simu',
     website: 'Tovuti',
+    impactTitle: 'Matokeo Yetu Kulingana na Namba',
+    impactDescription: 'Matokeo ya jibu tunayoifanya kwa jamii mjini Arusha na mikoa mingine',
   },
   common: {
     dark: 'Giza',

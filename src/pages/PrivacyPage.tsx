@@ -31,6 +31,22 @@ export function PrivacyPage() {
               <li>We use submitted information to respond and support our work.</li>
               <li>We do not sell visitor or supporter information.</li>
             </ul>
+            
+            <div className="mt-10 border-t border-emerald-200 pt-8">
+              <h3 className="text-xl font-bold text-slate-900">
+                {language === 'sw' ? 'Uwazi na Uwajibikaji' : 'Transparency & Accountability'}
+              </h3>
+              <p className="mt-2 text-sm text-slate-600">
+                {language === 'sw' ? 'Tunajivunia utendaji wa wazi. Unaweza kupakua hati zetu hapa.' : 'We take pride in our transparent operations. View our public documents below.'}
+              </p>
+              <div className="mt-4 flex flex-col gap-3">
+                <button className="flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-500">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                  {language === 'sw' ? 'Cheti cha Usajili (PDF)' : 'Registration Certificate (PDF)'}
+                </button>
+                <p className="text-xs text-slate-400 italic">{language === 'sw' ? '*Ripoti za mwaka zitaanza kupatikana mwishoni mwa 2024' : '*Annual reports will be available starting late 2024'}</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

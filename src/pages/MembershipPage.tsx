@@ -14,7 +14,7 @@ export function MembershipPage() {
       />
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
         <div className="stagger-grid grid gap-6 md:grid-cols-3">
-          {data.membershipTypes.map((memberType, index) => (
+          {data.membershipTypes?.map((memberType, index) => (
             <article key={memberType} className="rounded-[1.75rem] bg-white p-8 shadow-xl shadow-slate-200/70">
               <span className="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-emerald-700">
                 {language === 'sw' ? 'Mwanachama' : 'Member'} 0{index + 1}
@@ -23,6 +23,9 @@ export function MembershipPage() {
               <p className="mt-4 leading-8 text-slate-600">
                 {language === 'sw' ? 'Wanachama wanaoshiriki katika kuimarisha mwendelezo, umiliki, na ukuaji wa ALAREDEFO.' : 'Members who support the ongoing work, activities, and growth of ALAREDEFO.'}
               </p>
+              <a href="/#contact" className="mt-6 inline-block text-sm font-bold text-emerald-600 hover:text-emerald-500">
+                {language === 'sw' ? 'Omba Uanachama →' : 'Apply for Membership →'}
+              </a>
             </article>
           ))}
         </div>

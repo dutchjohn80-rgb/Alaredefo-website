@@ -1,8 +1,15 @@
 import { SectionHeading } from '../components/SectionHeading'
 import { ContactForm } from '../components/ContactForm'
 import { PortfolioGallery } from '../components/PortfolioGallery'
+import { ImpactStats } from '../components/ImpactStats'
+import { TrustBadges } from '../components/TrustBadges'
+import { NewsSection } from '../components/NewsSection'
+import { NewsletterSection } from '../components/NewsletterSection'
+import { DonateCtaSection } from '../components/DonateCtaSection'
 import { localized, organization, sw } from '../data/siteData'
 import { useAppContext } from '../context/AppContext'
+import { impactMetrics } from '../data/metrics'
+import { partnerLogos } from '../data/partners'
 
 export function HomePage() {
   const { language } = useAppContext()
@@ -105,6 +112,12 @@ export function HomePage() {
         </div>
       </section>
 
+      <ImpactStats 
+        stats={impactMetrics}
+        title={t ? t.impactTitle : 'Our Impact by the Numbers'}
+        description={t ? t.impactDescription : 'Measurable results from community-centered interventions across northern Tanzania'}
+      />
+
       <section id="portfolio" className="section-band mx-auto max-w-7xl px-6 py-20 lg:px-8">
         <SectionHeading eyebrow={t ? t.portfolioEyebrow : 'Portfolio'} title={t ? t.portfolioTitle : 'A visual snapshot of ALAREDEFO priorities'} description={t ? t.portfolioDescription : 'Images matched to the work areas and outreach story of the organization.'} />
         <PortfolioGallery items={data.portfolioItems} />
@@ -159,6 +172,14 @@ export function HomePage() {
           <ContactForm />
         </div>
       </section>
+
+      <TrustBadges badges={partnerLogos} />
+
+      <NewsSection />
+
+      <NewsletterSection />
+
+      <DonateCtaSection />
     </main>
   )
 }

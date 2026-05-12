@@ -7,6 +7,7 @@ import { MembershipPage } from './pages/MembershipPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { TermsPage } from './pages/TermsPage'
 import { PortfolioDetailPage } from './pages/PortfolioDetailPage'
+import { ResourcesPage } from './pages/ResourcesPage'
 
 function NotFoundPage() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/programs" element={<ProgramsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/membership" element={<MembershipPage />} />
+        <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/portfolio/:slug" element={<PortfolioDetailPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
