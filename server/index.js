@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import nodemailer from 'nodemailer'
+import Stripe from 'stripe'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -31,6 +32,56 @@ function createTransporter() {
     auth: { user, pass },
   })
 }
+
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY
+const stripe = stripeSecretKey ? new Stripe(stripeSecretKey, { apiVersion: '2023-08-16' }) : null
+
+app.post('/api/create-checkout-session', async (req, res) => {
+  if (!stripe) {
+    return res.status(500).json({ ok: false, message: 'Stripe is not configured. Add STRIPE_SECRET_KEY to your environment.' })
+  }
+
+  const { amount, frequency, source, title, dedicate } = req.body ?? {}
+  if (!amount || typeof amount !== 'number' || amount <= 0) {
+    return res.status(400).json({ ok: false, message: 'A valid amount is required.' })
+  }
+
+  const currency = 'tzs'
+  const host = req.headers.origin || `http://localhost:${PORT}`
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: frequency === 'monthly' ? 'subscription' : 'payment',
+      success_url: `${host}/donate?success=true`,
+      cancel_url: `${host}/donate?canceled=true`,
+      line_items: [
+        {
+          price_data: {
+            currency,
+            product_data: {
+              name: frequency === 'monthly' ? 'Monthly donation' : 'One-time donation',
+              description: title ? `Donation for ${title}` : source ? `Donation for ${source}` : 'Support ALAREDEFO',
+            },
+            unit_amount: amount,
+            recurring: frequency === 'monthly' ? { interval: 'month' } : undefined,
+          },
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        source: source || 'general',
+        title: title || '',
+        dedicate: dedicate ? 'yes' : 'no',
+      },
+    })
+
+    return res.json({ url: session.url })
+  } catch (error) {
+    console.error('Stripe checkout session error:', error)
+    return res.status(500).json({ ok: false, message: 'Unable to create Stripe checkout session.' })
+  }
+})
 
 function escapeHtml(value) {
   return String(value ?? '')

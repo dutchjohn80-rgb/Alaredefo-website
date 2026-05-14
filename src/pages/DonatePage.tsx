@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import { Heart } from 'lucide-react'
@@ -23,11 +23,9 @@ export function DonatePage() {
   const [selectedAmount, setSelectedAmount] = useState<number>(70_000)
   const [customAmount, setCustomAmount] = useState<string>('')
   const [dedicate, setDedicate] = useState(false)
-  const [cardName, setCardName] = useState('')
-  const [cardNumber, setCardNumber] = useState('')
-  const [cardExpiry, setCardExpiry] = useState('')
-  const [cardCvc, setCardCvc] = useState('')
+  const [isProcessing, setIsProcessing] = useState(false)
   const [paymentSuccess, setPaymentSuccess] = useState(false)
+  const [paymentError, setPaymentError] = useState<string | null>(null)
 
   const query = useMemo(() => new URLSearchParams(location.search), [location.search])
   const sourceParam = query.get('source')?.toLowerCase()
@@ -91,12 +89,6 @@ export function DonatePage() {
   const amounts = frequency === 'monthly' ? monthlyAmounts : oneTimeAmounts
   const displayAmount = customAmount ? Number(customAmount.replace(/[^0-9]/g, '')) : selectedAmount
 
-  const hasValidCard =
-    cardName.trim().length > 1 &&
-    /^\d{12,19}$/.test(cardNumber.replace(/\s/g, '')) &&
-    /^\d{2}\/\d{2}$/.test(cardExpiry) &&
-    /^\d{3,4}$/.test(cardCvc)
-
   const copyBankDetails = async () => {
     const text = `${bankDetails.bankName}\n${bankDetails.branch}\n${bankDetails.accountName}\n${bankDetails.accountNumber}`
     try {
@@ -107,13 +99,65 @@ export function DonatePage() {
     }
   }
 
-  const handlePaymentSubmit = () => {
-    if (paymentMethod === 'card' && !hasValidCard) {
-      window.alert(isSw ? 'Tafadhali jaza taarifa sahihi za kadi.' : 'Please enter valid card details.')
+  useEffect(() => {
+    if (query.get('success') === 'true') {
+      setPaymentSuccess(true)
+      setStep('payment')
+    }
+
+    if (query.get('canceled') === 'true') {
+      setPaymentError(isSw ? 'Malipo yalihakishwa.' : 'Payment was canceled.')
+      setStep('payment')
+    }
+  }, [query, isSw])
+
+  const handlePaymentSubmit = async () => {
+    setPaymentError(null)
+    const amount = displayAmount
+
+    if (!amount || amount <= 0) {
+      window.alert(isSw ? 'Chagua kiasi kinachofaa.' : 'Please choose a valid amount.')
       return
     }
 
-    setPaymentSuccess(true)
+    if (paymentMethod === 'bank') {
+      copyBankDetails()
+      return
+    }
+
+    setIsProcessing(true)
+
+    try {
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount,
+          frequency,
+          source: sourceParam,
+          title: sourceTitle,
+          dedicate,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Unable to create checkout session.')
+      }
+
+      if (!data.url) {
+        throw new Error('Missing checkout URL from server.')
+      }
+
+      window.location.href = data.url
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      setPaymentError(message)
+      window.alert(isSw ? 'Taarifa ya malipo haikuweza kutumwa. Jaribu tena.' : `Payment could not be started. ${message}`)
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   return (
@@ -292,68 +336,24 @@ export function DonatePage() {
                 </div>
 
                 {paymentMethod === 'card' && (
-                  <div className="space-y-5 rounded-3xl border border-slate-200 bg-slate-50 p-5">
-                    <div>
-                      <p className="text-sm font-semibold text-slate-700">{isSw ? 'Jaza taarifa za kadi' : 'Enter card details'}</p>
-                    </div>
-                    <div className="grid gap-4">
-                      <label className="block text-sm font-semibold text-slate-700">
-                        {isSw ? 'Jina kwenye kadi' : 'Name on card'}
-                        <input
-                          value={cardName}
-                          onChange={(event) => setCardName(event.target.value)}
-                          placeholder={isSw ? 'Jina lako kama lilivyo kwenye kadi' : 'Your name as shown on card'}
-                          className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                        />
-                      </label>
-                      <label className="block text-sm font-semibold text-slate-700">
-                        {isSw ? 'Namba ya kadi' : 'Card number'}
-                        <input
-                          value={cardNumber}
-                          onChange={(event) => setCardNumber(event.target.value.replace(/[^0-9]/g, ''))}
-                          placeholder="1234 5678 9012 3456"
-                          maxLength={19}
-                          inputMode="numeric"
-                          className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                        />
-                      </label>
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <label className="block text-sm font-semibold text-slate-700">
-                          {isSw ? 'Tarehe ya kutokea' : 'Expiry'}
-                          <input
-                            value={cardExpiry}
-                            onChange={(event) => setCardExpiry(event.target.value.replace(/[^0-9/]/g, ''))}
-                            placeholder="MM/YY"
-                            maxLength={5}
-                            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                          />
-                        </label>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          CVC
-                          <input
-                            value={cardCvc}
-                            onChange={(event) => setCardCvc(event.target.value.replace(/[^0-9]/g, ''))}
-                            placeholder="123"
-                            maxLength={4}
-                            inputMode="numeric"
-                            className="mt-2 w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                          />
-                        </label>
-                      </div>
-                    </div>
+                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                    <h3 className="text-lg font-semibold text-slate-900">{isSw ? 'Malipo ya Kadi' : 'Card payment'}</h3>
+                    <p className="mt-3 text-sm text-slate-600">
+                      {isSw
+                        ? 'Utapelekwa kwenye ukurasa salama wa Stripe kwa malipo ya kadi.'
+                        : 'You will be redirected to Stripe for a secure card payment.'}
+                    </p>
                   </div>
                 )}
 
                 {paymentMethod === 'google' && (
                   <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                    <h3 className="text-lg font-semibold text-slate-900">Google Pay</h3>
                     <p className="mt-3 text-sm text-slate-600">
                       {isSw
-                        ? 'Chagua Google Pay kwa malipo ya haraka kupitia simu yako au kivinjari.'
-                        : 'Choose Google Pay for a fast payment using your phone or browser wallet.'}
+                        ? 'Stripe checkout itakuonyesha Google Pay ikiwa inapatikana kwenye kifaa chako.'
+                        : 'Stripe checkout will show Google Pay if available on your device.'}
                     </p>
-                    <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-5 text-sm text-slate-700">
-                      {isSw ? 'Bonyeza ili uendelee na Google Pay.' : 'Tap to continue with Google Pay.'}
-                    </div>
                   </div>
                 )}
 
@@ -403,16 +403,33 @@ export function DonatePage() {
                 <button
                   type="button"
                   onClick={handlePaymentSubmit}
-                  className="cursor-pointer w-full rounded-3xl bg-emerald-600 px-6 py-4 text-base font-bold text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-200"
+                  disabled={isProcessing}
+                  className={`cursor-pointer w-full rounded-3xl px-6 py-4 text-base font-bold text-white transition focus:outline-none focus:ring-4 focus:ring-emerald-200 ${
+                    isProcessing
+                      ? 'bg-emerald-400 opacity-80 cursor-not-allowed'
+                      : 'bg-emerald-600 hover:bg-emerald-700'
+                  }`}
                 >
-                  {paymentMethod === 'google'
-                    ? isSw ? 'Endelea na Google Pay' : 'Continue with Google Pay'
+                  {isProcessing
+                    ? isSw
+                      ? 'Tafadhali subiri...'
+                      : 'Please wait...'
+                    : paymentMethod === 'google'
+                    ? isSw
+                      ? 'Endelea na Google Pay'
+                      : 'Continue with Google Pay'
                     : paymentMethod === 'bank'
-                    ? isSw ? 'Tumia maelezo ya benki' : 'Use bank details'
+                    ? isSw
+                      ? 'Tumia maelezo ya benki'
+                      : 'Use bank details'
                     : isSw
                     ? 'Thibitisha malipo ya kadi'
                     : 'Confirm card payment'}
                 </button>
+
+                {paymentError && (
+                  <p className="text-sm font-semibold text-red-600">{paymentError}</p>
+                )}
 
                 <button
                   type="button"
