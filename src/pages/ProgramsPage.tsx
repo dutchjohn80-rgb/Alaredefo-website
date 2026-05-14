@@ -21,6 +21,12 @@ export function ProgramsPage() {
               </span>
               <h2 className="program-title text-2xl font-bold text-slate-900">{area.title}</h2>
               <p className="program-text mt-4 leading-8 text-slate-600">{area.description}</p>
+              <a
+                href={`/donate?source=empowerment&title=${encodeURIComponent(area.title)}`}
+                className="mt-6 inline-flex rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
+              >
+                {language === 'sw' ? 'Changia eneo hili' : 'Donate for this area'}
+              </a>
             </article>
           ))}
         </div>

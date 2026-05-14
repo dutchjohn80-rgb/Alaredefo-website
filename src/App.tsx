@@ -4,6 +4,7 @@ import { HomePage } from './pages/HomePage'
 import { ProgramsPage } from './pages/ProgramsPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { MembershipPage } from './pages/MembershipPage'
+import { DonatePage } from './pages/DonatePage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { TermsPage } from './pages/TermsPage'
 import { PortfolioDetailPage } from './pages/PortfolioDetailPage'
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/programs" element={<ProgramsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/membership" element={<MembershipPage />} />
+        <Route path="/donate" element={<DonatePage />} />
         <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/portfolio/:slug" element={<PortfolioDetailPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />

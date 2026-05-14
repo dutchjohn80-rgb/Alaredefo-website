@@ -47,6 +47,7 @@ const navLinks = [
   { label: 'Resources', href: '/resources' },
   { label: 'Profile', href: '/profile' },
   { label: 'Membership', href: '/membership' },
+  { label: 'Donate', href: '/donate' },
   { label: 'Contact', href: '/#contact' },
 ]
 
@@ -308,7 +309,7 @@ export function SiteLayout() {
               </button>
 
               <a
-                href="/#contact"
+                href="/donate"
                 className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg shadow-amber-950/40 hover:shadow-lg hover:shadow-amber-950/60 transition duration-300 hover:-translate-y-0.5"
               >
                 <Heart className="h-4 w-4" />
@@ -419,7 +420,7 @@ export function SiteLayout() {
                 {theme === 'dark' ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-slate-600" />}
               </button>
               <a
-                href="/#contact"
+                href="/donate"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-bold rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:shadow-lg transition duration-300"
               >
                 <Heart className="h-4 w-4" />

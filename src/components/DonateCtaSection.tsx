@@ -29,14 +29,14 @@ export function DonateCtaSection() {
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <a
-              href="/#contact"
+              href="/donate"
               className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-8 py-4 text-base font-extrabold uppercase tracking-wider text-white shadow-xl shadow-amber-950/30 transition hover:-translate-y-0.5 hover:bg-amber-400"
             >
               <Heart className="h-5 w-5" />
               {isSw ? 'Changia Sasa' : 'Donate Now'}
             </a>
             <a
-              href="/#contact"
+              href="/donate"
               className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-8 py-4 text-base font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/15"
             >
               {isSw ? 'Shirikiana Nasi' : 'Partner With Us'}

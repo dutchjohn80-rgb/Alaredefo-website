@@ -241,7 +241,7 @@ export const footerColumns = [
     heading: 'Get Involved',
     headingSw: 'Shiriki',
     links: [
-      { label: 'Donate', labelSw: 'Changia', href: '/#contact' },
+      { label: 'Donate', labelSw: 'Changia', href: '/donate' },
       { label: 'Become a Member', labelSw: 'Kuwa Mwanachama', href: '/membership' },
       { label: 'Partner With Us', labelSw: 'Shirikiana Nasi', href: '/#contact' },
       { label: 'Events', labelSw: 'Matukio', href: '/#contact' },
@@ -271,6 +271,7 @@ export const sw = {
     Programs: 'Programu',
     Profile: 'Wasifu',
     Membership: 'Uanachama',
+    Donate: 'Changia',
     Privacy: 'Faragha',
     Terms: 'Masharti',
   },

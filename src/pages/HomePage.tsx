@@ -106,6 +106,12 @@ export function HomePage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-lg font-black text-emerald-700">0{index + 1}</div>
                 <h3 className="mt-5 text-xl font-bold text-slate-900">{area.title}</h3>
                 <p className="mt-3 leading-7 text-slate-600">{area.description}</p>
+                <a
+                  href={`/donate?source=empowerment&title=${encodeURIComponent(area.title)}`}
+                  className="mt-5 inline-flex items-center justify-center rounded-full bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                >
+                  {language === 'sw' ? 'Changia kwa eneo hili' : 'Donate for this area'}
+                </a>
               </article>
             ))}
           </div>

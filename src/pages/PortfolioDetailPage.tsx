@@ -51,6 +51,9 @@ export function PortfolioDetailPage() {
                 <a href="/programs" className="inline-flex rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-white">
                   {language === 'sw' ? sw.common.viewPrograms : 'View Programs'}
                 </a>
+                <a href={`/donate?source=${item.filter}&title=${encodeURIComponent(item.title)}`} className="inline-flex rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-white">
+                  {language === 'sw' ? 'Changia eneo hili' : 'Donate to this work area'}
+                </a>
                 <a href="/#portfolio" className="inline-flex rounded-full border border-white/20 px-5 py-3 text-sm font-semibold text-white">
                   {language === 'sw' ? sw.common.backToPortfolio : 'Back to Portfolio'}
                 </a>
