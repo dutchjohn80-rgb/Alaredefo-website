@@ -13,6 +13,7 @@ const __dirname = path.dirname(__filename)
 const distPath = path.resolve(__dirname, '..', 'dist')
 
 app.use(cors())
+app.use('/api/stripe-webhook', express.raw({ type: 'application/json' }))
 app.use(express.json())
 
 function createTransporter() {
@@ -34,6 +35,7 @@ function createTransporter() {
 }
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY
+const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 const stripe = stripeSecretKey ? new Stripe(stripeSecretKey, { apiVersion: '2023-08-16' }) : null
 
 app.post('/api/create-checkout-session', async (req, res) => {
@@ -81,6 +83,65 @@ app.post('/api/create-checkout-session', async (req, res) => {
     console.error('Stripe checkout session error:', error)
     return res.status(500).json({ ok: false, message: 'Unable to create Stripe checkout session.' })
   }
+})
+
+app.post('/api/stripe-webhook', async (req, res) => {
+  if (!stripe || !stripeWebhookSecret) {
+    return res.status(500).json({ ok: false, message: 'Stripe webhook is not configured.' })
+  }
+
+  const sig = req.headers['stripe-signature']
+  let event
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, stripeWebhookSecret)
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err.message)
+    return res.status(400).send(`Webhook Error: ${err.message}`)
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object
+
+    try {
+      const transporter = createTransporter()
+      if (!transporter) {
+        console.error('Email transporter not configured for payment notification')
+        return res.json({ received: true })
+      }
+
+      const amount = session.amount_total / 100
+      const currency = session.currency.toUpperCase()
+      const source = session.metadata?.source || 'general'
+      const title = session.metadata?.title || ''
+      const dedicate = session.metadata?.dedicate === 'yes'
+
+      const subject = `ALAREDEFO Donation Received - ${amount} ${currency}`
+      const html = `
+        <h2>New Donation Received</h2>
+        <p><strong>Amount:</strong> ${amount} ${currency}</p>
+        <p><strong>Type:</strong> ${session.mode === 'subscription' ? 'Monthly' : 'One-time'}</p>
+        <p><strong>Source:</strong> ${source}${title ? ` (${title})` : ''}</p>
+        <p><strong>Dedicated:</strong> ${dedicate ? 'Yes' : 'No'}</p>
+        <p><strong>Payment ID:</strong> ${session.payment_intent || session.subscription}</p>
+        <p><strong>Customer Email:</strong> ${session.customer_details?.email || 'Not provided'}</p>
+        <p><strong>Date:</strong> ${new Date(session.created * 1000).toLocaleString()}</p>
+      `
+
+      await transporter.sendMail({
+        from: process.env.CONTACT_FROM || process.env.SMTP_USER,
+        to: process.env.CONTACT_TO || process.env.SMTP_USER,
+        subject,
+        html,
+      })
+
+      console.log(`Payment notification sent for ${amount} ${currency}`)
+    } catch (error) {
+      console.error('Failed to send payment notification:', error)
+    }
+  }
+
+  res.json({ received: true })
 })
 
 function escapeHtml(value) {
