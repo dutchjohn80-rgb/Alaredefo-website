@@ -215,7 +215,7 @@ export const testimonials = [
       'ALAREDEFO changed our village — they trained women in small business and helped us build a savings group that transformed our incomes.',
     name: 'Alfonce M.',
     role: 'Community Leader, Arusha',
-    image: 'public/images/portfolio/portfolio-portrait-5.jpeg',
+image: '/images/portfolio/portfolio-portrait-5.jpeg',
   },
   {
     id: 't2',
@@ -223,7 +223,7 @@ export const testimonials = [
       'The youth training program gave me skills to start a tailoring business. Now I support my family and employ others.',
     name: 'Juma K.',
     role: 'Program Participant',
-    image: 'public/images/portfolio/portfolio-portrait-8.jpeg',
+    image: '/images/portfolio/portfolio-portrait-8.jpeg',
   },
   {
     id: 't3',
