@@ -208,6 +208,33 @@ export const newsItems: NewsItem[] = [
   },
 ]
 
+export const testimonials = [
+  {
+    id: 't1',
+    quote:
+      'ALAREDEFO changed our village — they trained women in small business and helped us build a savings group that transformed our incomes.',
+    name: 'Alfonce M.',
+    role: 'Community Leader, Arusha',
+    image: 'public/images/portfolio/portfolio-portrait-5.jpeg',
+  },
+  {
+    id: 't2',
+    quote:
+      'The youth training program gave me skills to start a tailoring business. Now I support my family and employ others.',
+    name: 'Juma K.',
+    role: 'Program Participant',
+    image: 'public/images/portfolio/portfolio-portrait-8.jpeg',
+  },
+  {
+    id: 't3',
+    quote:
+      'ALAREDEFO partners with local schools to improve nutrition education — the results have been visible and lasting.',
+    name: 'Fatima R.',
+    role: 'Teacher, Arumeru',
+    image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop',
+  },
+]
+
 export const socialLinks = [
   { platform: 'Facebook', url: 'https://facebook.com/alaredefo', icon: 'Facebook' },
   { platform: 'Twitter', url: 'https://twitter.com/alaredefo', icon: 'Twitter' },
