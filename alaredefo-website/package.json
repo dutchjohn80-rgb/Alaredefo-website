@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "alaredefo-website": "file:..",
+    "framer-motion": "^12.40.0"
+  }
+}

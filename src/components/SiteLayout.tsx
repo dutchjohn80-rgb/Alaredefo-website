@@ -478,9 +478,15 @@ export function SiteLayout() {
                     ? 'Kuwezesha jamii, kubadilisha maisha — Tanzania.'
                     : 'Empowering communities, transforming lives across Tanzania.'}
                 </p>
-                <p className="mt-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                  Reg: {organization.registrationNumber}
-                </p>
+                  <p className="mt-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    Reg: {organization.registrationNumber}
+                  </p>
+
+                  <form action="/api/newsletter" method="post" className="mt-6 flex max-w-md items-center gap-2">
+                    <label htmlFor="newsletter-email" className="sr-only">Email</label>
+                    <input id="newsletter-email" name="email" type="email" placeholder={language === 'sw' ? 'Barua pepe yako' : 'Your email'} className="flex-1 rounded-md border px-3 py-2 text-sm" />
+                    <button type="submit" className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700">{language === 'sw' ? 'Jiandikishe' : 'Subscribe'}</button>
+                  </form>
               </div>
 
               {/* Link columns */}

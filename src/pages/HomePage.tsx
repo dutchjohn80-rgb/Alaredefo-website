@@ -1,6 +1,9 @@
+import { motion } from 'framer-motion'
 import { SectionHeading } from '../components/SectionHeading'
 import { ContactForm } from '../components/ContactForm'
 import { PortfolioGallery } from '../components/PortfolioGallery'
+import { Testimonials } from '../components/Testimonials'
+import { testimonials } from '../data/siteData'
 import { ImpactStats } from '../components/ImpactStats'
 import { TrustBadges } from '../components/TrustBadges'
 import { NewsSection } from '../components/NewsSection'
@@ -17,32 +20,71 @@ export function HomePage() {
   const t = language === 'sw' ? sw.home : null
   return (
     <main>
-      <section
+      <motion.section
         id="home"
         className="hero-showcase relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.9 }}
       >
+        <div className="absolute inset-0 bg-black/50 z-0" />
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-18 lg:min-h-[calc(100vh-5.25rem)] lg:grid-cols-[1.04fr_0.96fr] lg:px-8 lg:py-24">
-          <div className="relative z-10 reveal-up">
+          <motion.div
+            className="relative z-10 reveal-up"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+          >
             <p className="inline-flex rounded-full border border-emerald-300/35 bg-emerald-300/15 px-4 py-1.5 text-sm font-bold text-emerald-50 shadow-lg shadow-emerald-950/20 backdrop-blur">
               {t ? t.registered : 'Registered NGO No.'} {organization.registrationNumber}
             </p>
-            <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.02] tracking-tight text-white sm:text-5xl lg:text-7xl">
+            <motion.h1
+              className="mt-6 max-w-4xl text-4xl font-black leading-[1.02] tracking-tight text-white sm:text-5xl lg:text-7xl"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.9, delay: 0.15 }}
+            >
               {organization.fullName}
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-emerald-50/90">{data.preamble}</p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            </motion.h1>
+            <motion.p
+              className="mt-6 max-w-2xl text-lg leading-8 text-emerald-50/90"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.9, delay: 0.25 }}
+            >
+              {data.preamble}
+            </motion.p>
+            <motion.div
+              className="mt-8 flex flex-wrap gap-4"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.9, delay: 0.35 }}
+            >
+              <a href="/donate" className="rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-amber-950/30 transition hover:-translate-y-0.5">
+                {language === 'sw' ? 'Changia Sasa' : 'Donate Now'}
+              </a>
               <a href="#about" className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-extrabold text-slate-950 shadow-xl shadow-emerald-950/30 transition hover:-translate-y-0.5 hover:bg-amber-300">
                 {t ? t.learnMore : 'Learn More'}
               </a>
               <a href="#contact" className="rounded-full border border-white/25 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:border-white/50 hover:bg-white/15">
                 {t ? t.contactUs : 'Contact Us'}
               </a>
-            </div>
+            </motion.div>
             <div className="mt-10 grid max-w-xl grid-cols-2 gap-4 sm:grid-cols-3">
-              <div className="hero-stat">
+              <motion.div
+                className="hero-stat"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.9, delay: 0.45 }}
+              >
                 <p className="text-2xl font-bold text-white">{organization.registrationDate}</p>
                 <p className="mt-1 text-sm text-slate-300">{t ? t.registrationDate : 'Registration Date'}</p>
-              </div>
+              </motion.div>
               <div className="hero-stat">
                 <p className="text-2xl font-bold text-white">{organization.region}</p>
                 <p className="mt-1 text-sm text-slate-300">{t ? t.headOffice : 'Head Office'}</p>
@@ -52,9 +94,9 @@ export function HomePage() {
                 <p className="mt-1 text-sm text-slate-300">{t ? t.thematicAreas : 'Thematic Areas'}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="relative z-10 reveal-up lg:self-center">
+          <div className="relative z-0 reveal-up lg:self-center">
             <div className="hero-photo-grid">
               <img src="/images/about/about-group-1.jpeg" alt="ALAREDEFO community support" className="hero-photo-main" />
               <div className="hero-photo-caption">
@@ -65,7 +107,7 @@ export function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       <section id="about" className="section-band mx-auto max-w-7xl px-6 py-20 lg:px-8">
         <SectionHeading eyebrow={t ? t.aboutEyebrow : 'About'} title={t ? t.aboutTitle : 'Vision, mission, and people-centered impact'} description={data.vision} />
@@ -128,6 +170,8 @@ export function HomePage() {
         <SectionHeading eyebrow={t ? t.portfolioEyebrow : 'Portfolio'} title={t ? t.portfolioTitle : 'A visual snapshot of ALAREDEFO priorities'} description={t ? t.portfolioDescription : 'Images matched to the work areas and outreach story of the organization.'} />
         <PortfolioGallery items={data.portfolioItems} />
       </section>
+
+      <Testimonials items={testimonials} />
 
       <section id="objectives" className="objectives-band py-20 text-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
